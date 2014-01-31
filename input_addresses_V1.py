@@ -5,18 +5,33 @@ import math
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir,'data')
-##tex_files_dir = os.path.join(data_dir,'raw_tex')
-##indicia_dir = os.path.join(data_dir,'indicias')
-##pdf_dir = os.path.join(main_dir,'outputs')
-##junk_dir = os.path.join(main_dir,'junk')
 address_dir = os.path.join(data_dir,'address_files')
 
+
+
 def get_reader(filename):
+    """Returns a csv reader and a file_handle to input file, assuming
+    it exists in the address_dir.  Catastrophic failure otherwise
+
+    'Private' function
+    """
+    
     f = open(os.path.join(address_dir,filename),'r+')
     add_reader = csv.reader(f)
     return add_reader,f
 
+
 def generate_job_id(cache = []):
+    """Creates a new job id number from a random number.
+
+    You'll notice the cache in the input.  This doesn't work, because it's
+    not preserved across code invocations.  If you do several files in one
+    instantiation of the interactive editor, you will be guaranteed unique
+    ID's.  If you don't, you'll probably be safe because it seeds from the
+    system time, but this is not acceptable for production code.  Probably?
+    I have to seriously consider this.  Maybe pickle the cache?
+    """
+    
     new_id = math.ceil(random.random() * 10**5)
     if new_id in cache:
         new_id = generate_job_id()
@@ -24,6 +39,10 @@ def generate_job_id(cache = []):
     return new_id
 
 def define_mapping(x,header):
+    """Changes the name of a column header to a user input one.
+    Will only accept a canonical header.
+    """
+    
     print(x,' is not a standard header name.\n')
     new = 'elephant man'
     while new not in header:
@@ -32,10 +51,14 @@ def define_mapping(x,header):
     
 
 def reformat_address_file(reader,file):
+    """Reformat is a bit of a misnomer at this point.
+    Standardizes and correctly orders the header row,
+    then reorders columns to match.  Along the way,
+    counts various things and creates two additional
+    csv files to store country ordering and bulk/single data
+    """
 
-    #Actual Address files might have things out of order
-    #and might also be missing some columns
-    #This puts them in printing order
+    #canonical titles and order or keyrow
     header = ['Other 1',
               'Other 2',
               'Name',
@@ -51,6 +74,7 @@ def reformat_address_file(reader,file):
               'Number of Copies']
                       
 
+    #Initialize some things
     title_row = next(reader)
     sort_helper = []
     mult_copies_list = []
@@ -58,6 +82,8 @@ def reformat_address_file(reader,file):
     incredulity_counter = 0
     total_num_mags = 0
 
+
+    #ensure title row is in correct order and contains correct headings
     for x in title_row:
         if x!='' and x in header:
             sort_helper.append(header.index(x))
@@ -66,28 +92,36 @@ def reformat_address_file(reader,file):
             sort_helper.append(header.index(new_header))
             
 
+    #temp will be the new main csv
     temp = os.path.join(address_dir,'temp.csv')
+    
+    #these two hold the orders of bulk and single
     bulk_country = os.path.splitext(file.name)[0]+'_btemp.csv'
     single_country = os.path.splitext(file.name)[0]+'_stemp.csv'
+
+    #open all these lovely files
     with open(temp,'w',newline = '') as new_file, open(bulk_country,'w',newline = '') as bulk_country,open(single_country,'w',newline='') as single_country:
 
+        #get writers for all necessary files
         writer = csv.writer(new_file)
         bc_writer = csv.writer(bulk_country)
         sc_writer = csv.writer(single_country)
 
+        
         writer.writerow(header)
+
+        #shuffle every row according to sort_helper and write it into temp
+        #also count how many magazines there are
         for line in reader:
             new_line = [x for (y,x) in sorted(zip(sort_helper,line))]
             writer.writerow(new_line)
             num_copies = int(new_line[-1])
             total_num_mags+=num_copies
 
-            #I think it will be easier if we have a sep file of the countries
-            #Then I can assign indicias quickly
-            #note: Blank country field simply means no inidicia
-            #One file for bulk ship and one for single ship
-            #because I have to do that anyway later and this is easier
-            #Sort of
+
+            #countries go into separate files depending on bulk or singleton
+            #This ends up being not necessary I think, after I refactor it
+            #But for now, it is easiest.
             country = new_line[-2]
             if num_copies>1:
                 bc_writer.writerow([country])
@@ -96,7 +130,8 @@ def reformat_address_file(reader,file):
                 
 
             
-            #if there is more than 1 copy, we need to know about that
+            #if there is more than 1 copy, we need to know about that,
+            #and where it happens
             if num_copies>1:
                 mult_copies_list.append(incredulity_counter)
 
@@ -105,11 +140,14 @@ def reformat_address_file(reader,file):
             
         
             
-
-    file.close()    
+    #close the initial address file
+    file.close()
+    #delete it
     os.remove(file.name)
+    #rename the newly formatted temp file to what the old address file was
     os.rename('C:\\Users\\DannyBrosef\\Desktop\\MyCodes\\CrystalReportsClone\\data\\address_files\\temp.csv',
               file.name)
+
     return file.name,mult_copies_list,incredulity_counter,total_num_mags
     
             

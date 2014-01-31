@@ -2,10 +2,8 @@ import os
 
 main_dir = os.path.split(os.path.abspath(__file__))[0]
 data_dir = os.path.join(main_dir,'data')
-##tex_files_dir = os.path.join(data_dir,'raw_tex')
 indicia_dir = os.path.join(data_dir,'indicias')
-##pdf_dir = os.path.join(main_dir,'outputs')
-##junk_dir = os.path.join(main_dir,'junk')
+
 
 
 #later this will need another dic per country
@@ -13,6 +11,9 @@ indicia_dir = os.path.join(data_dir,'indicias')
 #and some of the entries should be off standard weights
 #and they should probably be integers and not strings
 #and I guess capitalized?  Or some string processing in the find function
+#also all the file names need to have spaces removed so LaTeX doesn't fucking
+#kill itself
+
 indicia_dic = {
     'Belgium':
     {'Flats < 5 0z': 'RMNetherlandsSticker.png',
@@ -126,6 +127,15 @@ indicia_dic = {
     
 
 def find_indicia_file(country,weight='Flats < 5 0z'):
+    """Checks the dictionary to select the correct indicia depending on the
+    country and the weight
+
+    If there is no match, the function silently passes None, which propagates
+    upwards and ends up putting the default indicia (which is an arrow at
+    present)
+
+    """
+    
     try:
         file = indicia_dic[country][weight]
     except KeyError:

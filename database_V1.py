@@ -103,7 +103,8 @@ if __name__=='__main__':
         
         makeCustomers = '''create table Customers(Customer varchar(20),
                                                   Name varchar(20),                                         
-                                                  primary key(Customer
+                                                  primary key(Customer,
+                                                  Name
                                                               ));'''
         makePublications = '''create table Publications(Name varchar(20),
                                                         Volume int,

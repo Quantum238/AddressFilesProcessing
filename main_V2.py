@@ -23,7 +23,7 @@ def produce_pdf(file):
     create_document(file)
     print('All done, pal')
 
-def make_sets_of_pages(f,addresses,mult_list,mode):
+def make_sets_of_pages(f,addresses,mult_list,option):
     """Calls the various LaTeX generation functions
 
     f is the tex file that will be created

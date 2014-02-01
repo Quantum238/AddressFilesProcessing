@@ -80,7 +80,7 @@ def make_logfile(total_num_addresses,
         f.write('\n')
         f.write('Total Weight: '+str(float(total_num_mags)*float(weight)))
         f.write('\n')
-        f.write('Date Printed: '+str(date.date.today()))
+        f.write('Date Printed: '+str(datetime.date.today()))
         f.write('\n')
         f.write('Country Breakdown:')
         f.write('\n')

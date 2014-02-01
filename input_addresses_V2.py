@@ -102,7 +102,7 @@ def validate_header(keyline):
             new_header = define_mapping(x,header_row)
             sort_helper.append(header.index(new_header))
 
-    return sort_helper
+    return sort_helper,header_row
 
 def validate_country(country,cache = {}):
     """'Private Function'
@@ -158,10 +158,11 @@ def process_address_file(reader,file):
     new_file = os.path.join(address_dir,'temp.csv')
 
     keyline = next(reader)
-    sort_helper = validate_header(keyline)
+    sort_helper,header_row = validate_header(keyline)
 
     with open(new_file,'w',newline = '') as f:
         writer = csv.writer(f)
+        writer.writerow(header_row)
 
         for line in reader:
             new_line = [x for (y,x) in sorted(zip(sort_helper,line))]

@@ -100,7 +100,7 @@ if __name__ == '__main__':
     job_id = get_next_job_id()
 
     out_file = magazine_name + '_V' + volume_number
-    add_from_inputs(magazine_name,volume_number,job_id,add_file,out_file)
+    add_from_inputs(magazine_name,volume_number,weight,job_id,add_file,out_file)
 
     addresses,file_handle = get_reader(add_file)
     file_name,mult_copies_list,num_addresses,total_num_mags,countries = process_address_file(addresses,

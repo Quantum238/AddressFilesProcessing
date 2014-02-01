@@ -160,7 +160,7 @@ def process_address_file(reader,file):
     keyline = next(reader)
     sort_helper = validate_header(keyline)
 
-    with open(temp,'w',newline = '') as f:
+    with open(new_file,'w',newline = '') as f:
         writer = csv.writer(f)
 
         for line in reader:

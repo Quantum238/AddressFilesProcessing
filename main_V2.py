@@ -103,7 +103,7 @@ if __name__ == '__main__':
     add_from_inputs(magazine_name,volume_number,weight,job_id,add_file,out_file)
 
     addresses,file_handle = get_reader(add_file)
-    file_name,mult_copies_list,num_addresses,total_num_mags,countries = process_address_file(addresses,
+    file_name,mult_copies_list,total_num_addresses,total_num_mags,countries = process_address_file(addresses,
                                                                                              file_handle)
     addresses,file_handle = get_reader(add_file)
 

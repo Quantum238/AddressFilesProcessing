@@ -188,7 +188,7 @@ def process_address_file(reader,file):
     os.remove(file.name)
     os.rename(new_file,file.name)
 
-    return file.name,mult_copies_list,row_counter,total_num_mags
+    return file.name,mult_copies_list,row_counter,total_num_mags,countries
 
         
             

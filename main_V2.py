@@ -97,7 +97,7 @@ if __name__ == '__main__':
     weight = input('Weight: ')
     add_file = input('Address File Name: ')
 
-    job_id = get_job_id()
+    job_id = get_next_job_id()
 
     out_file = magazine_name + '_V' + volume_number
     add_from_inputs(magazine_name,volume_number,job_id,add_file,out_file)

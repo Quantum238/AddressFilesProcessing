@@ -126,7 +126,7 @@ if __name__ == '__main__':
         end_page(f)
         end_doc(f)
 
-    maker = Process(target = create_document_fully,
+    maker = Process(target = produce_pdf,
                     args = ['tempfile.tex']
                     )
     maker.start()

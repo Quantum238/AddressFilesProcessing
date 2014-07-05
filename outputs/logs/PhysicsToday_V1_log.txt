@@ -1,0 +1,16 @@
+Total Number of Addresses: 10
+Total Number of Magazines: 29
+Total Weight: 29.0
+Date Printed: 2014-02-01
+Country Breakdown:
+MRUN : 1
+GBGL : 1
+AQAO : 1
+HGII : 1
+ZVMG : 1
+KABP : 1
+RWHV : 1
+CVYD : 1
+ZVGB : 1
+Belgium : 1
+

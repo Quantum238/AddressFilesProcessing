@@ -106,7 +106,7 @@ def validate_header(keyline):
 
 def validate_country(country,cache = {}):
     """'Private Function'
-    Ensures country is a proper country (none of that South Volta nonesense)
+    Ensures country is a proper country (none of that South Volta nonsense)
 
     """
 
